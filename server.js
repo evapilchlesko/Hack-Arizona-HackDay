@@ -13,6 +13,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'main.html'));
 });
 
+app.get('/login.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
 
 // --- 1. DATABASE CONNECTION ---
 // Make sure to add MONGODB_URI to your .env file

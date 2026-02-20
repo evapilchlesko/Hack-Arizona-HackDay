@@ -273,12 +273,79 @@
         }
 
         // Form Submission placeholder logic
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Form submitted! In a real app, this would redirect you.');
-            });
+        /*document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Account Created!');
+        }); */   
+
+        // --- SIGN UP LOGIC ---
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevents the browser from reloading (and the "Cannot GET" error)
+
+    // 1. Grab the values from the input fields
+    const fullName = e.target.querySelector('input[placeholder="Your Name"]').value;
+    const email = e.target.querySelector('input[type="email"]').value;
+    const password = e.target.querySelector('input[type="password"]').value;
+
+    try {
+        // 2. Send the data to your Node.js server
+        const response = await fetch('http://localhost:3000/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                fullName: fullName,
+                email: email,
+                password: password
+            })
         });
+
+        const data = await response.json();
+
+        // 3. Handle the response
+        if (response.ok) {
+            alert('🌸 Account Created Successfully! Please log in.');
+            
+            // Clear the form
+            e.target.reset();
+            
+            // Switch the UI back to the login tab automatically
+            switchTab('login'); 
+        } else {
+            // Show the error from the server (e.g., "User already exists")
+            alert('❌ Signup Failed: ' + data.error);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('❌ Could not connect to the server. Is it running?');
+    }
+});
+
+        /*document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Logged in successfully!');
+        }); */
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = e.target.querySelector('input[type="email"]').value;
+    const password = e.target.querySelector('input[type="password"]').value;
+
+    const response = await fetch('/api/login', { // Matches the backend app.post
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+        localStorage.setItem('token', data.token); // Save session
+        window.location.href = "/"; // Redirect to home
+    } else {
+        alert(data.error);
+    }
+});
     </script>
 </body>
 </html>
