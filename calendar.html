@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 Calendar 🌸</title>
+    <title>🌸 My Daily Calendar 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,6 @@
             --cat-blue: #b2e2f2;
             --cat-green: #b2f2bb;
             --cat-purple: #e2b2f2;
-            --cat-yellow: #f2eeb2;
         }
 
         body {
@@ -23,7 +22,7 @@
             color: var(--text-color);
         }
 
-        /* --- UPDATED TOP NAV --- */
+        /* --- TOP NAV --- */
         .topnav {
             background-color: white;
             display: flex;
@@ -35,38 +34,25 @@
             z-index: 1000;
         }
 
-        .topnav-left, .topnav-center, .topnav-right {
-            flex: 1; /* Each takes 1/3 of the width */
-            display: flex;
-            align-items: center;
-        }
-
-        .topnav-left { justify-content: flex-start; }
+        .topnav-left, .topnav-center, .topnav-right { flex: 1; display: flex; align-items: center; }
+        .topnav-left { justify-content: flex-start; gap: 10px; }
         .topnav-center { justify-content: center; }
         .topnav-right { justify-content: flex-end; }
 
         .topnav a {
             color: var(--text-color);
-            text-align: center;
-            padding: 12px 20px;
+            padding: 12px 18px;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             border-radius: 12px;
             transition: 0.3s;
+            cursor: pointer;
         }
 
-        .topnav a:hover {
-            background-color: var(--bg-color);
-            color: var(--primary-pink);
-        }
+        .topnav a.active { background: var(--primary-pink); color: white; }
 
-        .topnav a.active {
-            background-color: var(--primary-pink);
-            color: white;
-        }
-
-        /* --- LAYOUT WRAPPER --- */
+        /* --- CALENDAR LAYOUT --- */
         .page-content {
             display: flex;
             justify-content: center;
@@ -102,17 +88,14 @@
             cursor: pointer;
             border-radius: 15px;
             font-weight: 600;
-            transition: 0.3s;
         }
-
-        .month-header button:hover { background: white; color: var(--primary-pink); }
 
         .day-names { display: grid; grid-template-columns: repeat(7, 1fr); background: #fff5f7; }
         .day-names div { padding: 15px; text-align: center; font-weight: 600; color: #d8a4a4; }
         .days { display: grid; grid-template-columns: repeat(7, 1fr); padding: 10px; }
         
         .day-cell {
-            min-height: 120px;
+            min-height: 130px;
             padding: 10px;
             border-radius: 20px;
             cursor: pointer;
@@ -121,27 +104,35 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            position: relative;
         }
 
         .day-cell:hover { background-color: #fff9fa; border-color: var(--primary-pink); }
-        .today { background: #fff0f3 !important; color: #ff4d6d; }
+        .today { background: #fff0f3 !important; border: 2px dashed var(--primary-pink) !important; }
+
+        /* --- THE IN-CELL BUTTON --- */
+        .checkin-btn-cell {
+            background: var(--cat-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 5px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: auto; /* Pushes it to the bottom of the cell */
+            transition: 0.2s;
+        }
+        .checkin-btn-cell:hover { transform: scale(1.05); background: #b39ddb; }
+
+        /* STICKER POSITIONS */
+        .sticker { position: absolute; font-size: 1.2rem; }
+        .med-sticker { top: 10px; right: 10px; }
+        .star-sticker { top: 10px; right: 35px; }
 
         .appointment {
-            font-size: 0.7rem;
-            padding: 5px 8px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            animation: popIn 0.3s ease;
-        }
-
-        .appt-time { font-weight: bold; font-size: 0.6rem; opacity: 0.7; }
-
-        .delete-btn {
-            position: absolute; right: 5px; top: 5px; border: none;
-            background: rgba(255,255,255,0.4); border-radius: 50%;
-            width: 16px; height: 16px; cursor: pointer; font-size: 10px;
+            font-size: 0.7rem; padding: 5px 8px; border-radius: 10px;
+            background: var(--cat-blue); color: #447a8a;
         }
 
         /* MODAL STYLES */
@@ -151,45 +142,28 @@
             justify-content: center; align-items: center;
             backdrop-filter: blur(4px); z-index: 2000;
         }
-
         .modal { background: white; padding: 30px; border-radius: 25px; width: 350px; }
-        .modal h3 { margin-top: 0; color: var(--primary-pink); }
         .modal input, .modal textarea {
             width: 100%; padding: 10px; margin: 10px 0;
             border: 2px solid #eee; border-radius: 10px; font-family: inherit; box-sizing: border-box;
         }
-
-        .color-options { display: flex; gap: 10px; margin: 10px 0; }
-        .color-dot { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; }
-        .color-dot.active { border-color: #5a5a5a; }
-
         .modal-btns { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
         .modal-btns button { padding: 10px 20px; border-radius: 12px; border: none; cursor: pointer; }
-        .save-btn { background: var(--primary-pink); color: white; }
-
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .save-btn { background: var(--primary-pink); color: white; font-weight: 600; }
     </style>
 </head>
 <body>
 
-    <!-- 1. TOP NAV BAR -->
     <div class="topnav">
         <div class="topnav-left">
-            <a href="#home" >Home</a>
-            <a href="#support">Support Group</a>
+            <a href="#home">Home</a>
+            <a href="#support">Support</a>
             <a href="#medicine">Medicine</a>
         </div>
-        
-        <div class="topnav-center">
-            <a href="#calendar" class="active">Calendar</a>
-        </div>
-    
-        <div class="topnav-right">
-            <a href="#account">Account</a>
-        </div>
+        <div class="topnav-center"><a class="active">Calendar</a></div>
+        <div class="topnav-right"><a href="#account">Account</a></div>
     </div>
 
-    <!-- 2. WRAPPER FOR CALENDAR -->
     <div class="page-content">
         <div class="calendar">
             <div class="month-header">
@@ -204,26 +178,11 @@
         </div>
     </div>
 
-    <!-- 3. MODAL -->
+    <!-- APPOINTMENT MODAL -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
-            <h3 id="modalTitleText">Add Appointment</h3>
-            <input type="text" id="apptTitle" placeholder="What's happening?">
-            <input type="time" id="apptTime">
-            <textarea id="apptDesc" placeholder="Notes (optional)" rows="2"></textarea>
-            
-            <p style="font-size: 0.8rem; margin-bottom: 5px;">Pick a color:</p>
-            <div class="color-options">
-                <div class="color-dot active" style="background: var(--cat-blue)" onclick="selectColor(this, 'var(--cat-blue)')"></div>
-                <div class="color-dot" style="background: var(--cat-green)" onclick="selectColor(this, 'var(--cat-green)')"></div>
-                <div class="color-dot" style="background: var(--cat-purple)" onclick="selectColor(this, 'var(--cat-purple)')"></div>
-                <div class="color-dot" style="background: var(--cat-yellow)" onclick="selectColor(this, 'var(--cat-yellow)')"></div>
-            </div>
-
-            <p style="font-size: 0.8rem; margin-bottom: 5px;">Sync to Google calendar:</p>
-            <div class="modal-btns" style="justify-content: center; margin-top: 0;">
-                <button onclick="exportToGoogle()" style="background: #4285F4; color: white; font-size: 0.7rem;">+ Google</button>
-            </div>
+            <h3>Add Appointment</h3>
+            <input type="text" id="apptTitle" placeholder="Title">
             <div class="modal-btns">
                 <button onclick="closeModal()">Cancel</button>
                 <button class="save-btn" onclick="saveAppointment()">Save</button>
@@ -231,11 +190,24 @@
         </div>
     </div>
 
+
+    <!-- CHECK-IN MODAL -->
+    <div class="modal-overlay" id="checkInModalOverlay">
+        <div class="modal">
+            <h3>⭐ Daily Check-in</h3>
+            <textarea id="checkInNotes" placeholder="How are you feeling today?" rows="3"></textarea>
+            <button class="save-btn" style="width:100%; background:var(--cat-purple);" onclick="saveCheckIn()">Finish Check-in ⭐</button>
+            <div class="modal-btns"><button onclick="closeModal()">Cancel</button></div>
+        </div>
+    </div>
+
     <script>
         let displayDate = new Date();
         let appointments = JSON.parse(localStorage.getItem('customCalendarAppts')) || {};
-        let currentEditingKey = null;
-        let selectedColor = 'var(--cat-blue)';
+        let medicineLogs = JSON.parse(localStorage.getItem('medicineLogs')) || {};
+        let checkInLogs = JSON.parse(localStorage.getItem('checkInLogs')) || {};
+
+        let currentKey = null;
 
         function renderCalendar() {
             const calendarDays = document.getElementById("calendarDays");
@@ -244,109 +216,87 @@
             const month = displayDate.getMonth();
             const today = new Date();
 
-            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            monthTitle.innerText = `${monthNames[month]} ${year}`;
+            monthTitle.innerText = `${["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][month]} ${year}`;
 
             calendarDays.innerHTML = "";
             const firstDayIndex = new Date(year, month, 1).getDay();
             const lastDay = new Date(year, month + 1, 0).getDate();
 
-            for (let x = 0; x < firstDayIndex; x++) {
-                calendarDays.appendChild(Object.assign(document.createElement("div"), {className: "empty"}));
-            }
+            for (let x = 0; x < firstDayIndex; x++) calendarDays.appendChild(Object.assign(document.createElement("div"), {className: "empty"}));
 
             for (let i = 1; i <= lastDay; i++) {
                 const dateKey = `${year}-${month + 1}-${i}`;
+                const isToday = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                
                 const dayDiv = document.createElement("div");
                 dayDiv.className = "day-cell";
-                if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) dayDiv.classList.add("today");
+                if (isToday) dayDiv.classList.add("today");
 
                 dayDiv.innerHTML = `<span>${i}</span>`;
 
+                // Stickers
+                if (medicineLogs[dateKey]) dayDiv.innerHTML += `<div class="sticker med-sticker">💊</div>`;
+                if (checkInLogs[dateKey]) dayDiv.innerHTML += `<div class="sticker star-sticker">⭐</div>`;
+
+                // Appointments
                 if (appointments[dateKey]) {
-                    const data = appointments[dateKey];
                     const appt = document.createElement("div");
                     appt.className = "appointment";
-                    appt.style.backgroundColor = data.color;
-                    appt.innerHTML = `
-                        <span class="appt-time">${data.time || ''}</span>
-                        <span style="font-weight:600">${data.title}</span>
-                        <button class="delete-btn" onclick="deleteAppt(event, '${dateKey}')">&times;</button>
-                    `;
+                    appt.innerText = appointments[dateKey].title;
                     dayDiv.appendChild(appt);
                 }
 
-                dayDiv.onclick = () => openModal(dateKey);
+                // THE BUTTON ON THE DAY OF
+                if (isToday) {
+                    const btn = document.createElement("button");
+                    btn.className = "checkin-btn-cell";
+                    btn.innerText = "Check-in ⭐";
+                    btn.onclick = (e) => {
+                        e.stopPropagation(); // Stop parent click
+                        currentKey = dateKey;
+                        document.getElementById("checkInModalOverlay").style.display = "flex";
+                    };
+                    dayDiv.appendChild(btn);
+                }
+
+                dayDiv.onclick = () => {
+                    currentKey = dateKey;
+                    document.getElementById("modalOverlay").style.display = "flex";
+                };
                 calendarDays.appendChild(dayDiv);
             }
         }
 
-        function getFormattedDateTime(dateKey, time) {
-            const [year, month, day] = dateKey.split('-');
-            const formattedMonth = month.padStart(2, '0');
-            const formattedDay = day.padStart(2, '0');
-            
-            // Default to 12:00 if no time is set
-            const timeStr = time ? time.replace(':', '') : "1200";
-            
-            // Format: YYYYMMDDTHHmmSS
-            return `${year}${formattedMonth}${formattedDay}T${timeStr}00`;
-        }
-        
-        function exportToGoogle() {
-            const title = document.getElementById("apptTitle").value;
-            const time = document.getElementById("apptTime").value;
-            const desc = document.getElementById("apptDesc").value;
-            
-            if (!title) return alert("Enter a title first!");
-
-            const startStr = getFormattedDateTime(currentEditingKey, time);
-            // End time is just 1 hour later for simplicity
-            const endStr = getFormattedDateTime(currentEditingKey, (parseInt(time.split(':')[0]) + 1) + ":" + time.split(':')[1]);
-
-            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}&details=${encodeURIComponent(desc)}&sf=true&output=xml`;
-            
-            window.open(url, '_blank');
-        }
-        
-        function openModal(key) {
-            currentEditingKey = key;
-            const existing = appointments[key] || {};
-            document.getElementById("apptTitle").value = existing.title || "";
-            document.getElementById("apptTime").value = existing.time || "";
-            document.getElementById("apptDesc").value = existing.desc || "";
-            document.getElementById("modalOverlay").style.display = "flex";
+        // --- SAVING ---
+        function saveCheckIn() {
+            checkInLogs[currentKey] = { notes: document.getElementById("checkInNotes").value };
+            localStorage.setItem('checkInLogs', JSON.stringify(checkInLogs));
+            closeModal();
+            renderCalendar();
         }
 
-        function closeModal() { document.getElementById("modalOverlay").style.display = "none"; }
-
-        function selectColor(el, color) {
-            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-            el.classList.add('active');
-            selectedColor = color;
+        function saveMedicine() {
+            const d = new Date(document.getElementById("medDate").value + 'T00:00:00');
+            medicineLogs[`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`] = true;
+            localStorage.setItem('medicineLogs', JSON.stringify(medicineLogs));
+            closeModal();
+            renderCalendar();
         }
 
         function saveAppointment() {
-            const title = document.getElementById("apptTitle").value;
-            if (!title) return alert("Please enter a title!");
-            appointments[currentEditingKey] = {
-                title: title,
-                time: document.getElementById("apptTime").value,
-                desc: document.getElementById("apptDesc").value,
-                color: selectedColor
-            };
+            appointments[currentKey] = { title: document.getElementById("apptTitle").value };
             localStorage.setItem('customCalendarAppts', JSON.stringify(appointments));
             closeModal();
             renderCalendar();
         }
 
-        function deleteAppt(e, key) {
-            e.stopPropagation();
-            if (confirm("Delete this?")) {
-                delete appointments[key];
-                localStorage.setItem('customCalendarAppts', JSON.stringify(appointments));
-                renderCalendar();
-            }
+        function openMedModal() {
+            document.getElementById("medDate").value = new Date().toISOString().split('T')[0];
+            document.getElementById("medModalOverlay").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = "none");
         }
 
         function changeMonth(step) {
