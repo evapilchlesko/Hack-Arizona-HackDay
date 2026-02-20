@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💊 Medicine Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+/* soft pastel theme — keeping it clean and calm */
+
+:root{
+--primary-pink:#ffb7c5;
+--bg-color:#fdf6f6;
+--text-color:#5a5a5a;
+--cat-blue:#b2e2f2;
+--cat-green:#b2f2bb;
+--cat-purple:#e2b2f2;
+--cat-yellow:#f2eeb2;
+--danger:#ff4d6d;
+--muted:#d8a4a4;
+}
+
+body{
+margin:0;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:var(--bg-color);
+font-family:"Poppins",sans-serif;
+color:var(--text-color);
+padding:18px;
+box-sizing:border-box;
+}
+
+.container{
+width:92%;
+max-width:1000px;
+background:white;
+box-shadow:0 20px 50px rgba(0,0,0,0.05);
+border-radius:30px;
+overflow:hidden;
+border:8px solid white;
+}
+
+/* header */
+
+.header{
+background:var(--primary-pink);
+color:white;
+padding:26px 28px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+}
+
+.header h2{margin:0;font-weight:700;}
+.header p{margin:6px 0 0 0;font-weight:300;}
+
+.btn{
+background:rgba(255,255,255,0.3);
+color:white;
+border:none;
+padding:10px 16px;
+cursor:pointer;
+border-radius:15px;
+font-weight:600;
+transition:0.25s;
+text-decoration:none;
+display:inline-block;
+}
+.btn:hover{background:white;color:var(--primary-pink);}
+.btn-danger:hover{color:var(--danger);}
+
+/* layout */
+
+.content{
+padding:18px;
+display:grid;
+grid-template-columns:1.2fr 0.8fr;
+gap:16px;
+}
+@media(max-width:900px){.content{grid-template-columns:1fr;}}
+
+.card{
+border:2px solid #f2f2f2;
+border-radius:22px;
+padding:16px;
+background:white;
+}
+
+.card-title{
+margin:0 0 10px 0;
+font-size:1.05rem;
+color:#c07c7c;
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+}
+@media(max-width:520px){.row{grid-template-columns:1fr;}}
+
+label{font-size:0.82rem;font-weight:600;margin-bottom:6px;display:block;}
+
+input,textarea{
+width:100%;
+padding:10px;
+border:2px solid #eee;
+border-radius:12px;
+font-family:inherit;
+box-sizing:border-box;
+}
+
+textarea{resize:vertical;min-height:80px;}
+
+.color-options{display:flex;gap:10px;margin-top:6px;}
+.color-dot{
+width:22px;height:22px;border-radius:50%;
+cursor:pointer;border:3px solid transparent;
+}
+.color-dot.active{border-color:#5a5a5a;}
+
+.save-btn{
+background:var(--primary-pink);
+color:white;
+border:none;
+padding:10px 16px;
+border-radius:12px;
+cursor:pointer;
+font-weight:700;
+}
+
+.ghost-btn{
+background:#f4f4f4;
+border:none;
+padding:10px 16px;
+border-radius:12px;
+cursor:pointer;
+font-weight:700;
+}
+
+.list{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+
+.entry{
+border:1px solid #f0f0f0;
+border-radius:18px;
+padding:12px;
+display:flex;
+justify-content:space-between;
+gap:12px;
+animation:popIn 0.2s ease;
+}
+
+.entry-title{font-weight:800;font-size:0.95rem;}
+.entry-meta{font-size:0.78rem;opacity:0.75;line-height:1.3;}
+
+.tiny{
+font-size:0.72rem;
+padding:6px 10px;
+border-radius:12px;
+border:none;
+cursor:pointer;
+font-weight:800;
+}
+
+.tiny-edit{background:#eef7ff;color:#2a6f97;}
+.tiny-del{background:#ffe6ea;color:var(--danger);}
+
+.status-pill{
+padding:10px 12px;
+border-radius:16px;
+background:#fff9fa;
+font-weight:700;
+color:#8a6f6f;
+}
+
+@keyframes popIn{
+from{transform:scale(0.96);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<div class="header">
+<div>
+<h2>💊 Medicine Tracker</h2>
+<p>Track what you took each day + dosage + time.</p>
+</div>
+
+<div>
+<!-- 🏠 go back to home page -->
+<a class="btn" href="index.html">Home</a>
+<button class="btn btn-danger" onclick="clearAll()">Clear All</button>
+</div>
+</div>
+
+<div class="content">
+
+<div class="card">
+<h3 class="card-title">Add / Edit Entry</h3>
+
+<div class="row">
+<div>
+<label>Date</label>
+<input type="date" id="dateField">
+</div>
+<div>
+<label>Time</label>
+<input type="time" id="timeField">
+</div>
+</div>
+
+<div class="row" style="margin-top:10px;">
+<div>
+<label>Medicine Name</label>
+<input type="text" id="nameField">
+</div>
+<div>
+<label>Dosage</label>
+<input type="text" id="doseField">
+</div>
+</div>
+
+<div style="margin-top:10px;">
+<label>Notes</label>
+<textarea id="notesField"></textarea>
+</div>
+
+<div style="margin-top:10px;">
+<label>Color Tag</label>
+<div class="color-options">
+<div class="color-dot active" style="background:var(--cat-blue)" onclick="selectColor(this,'var(--cat-blue)')"></div>
+<div class="color-dot" style="background:var(--cat-green)" onclick="selectColor(this,'var(--cat-green)')"></div>
+<div class="color-dot" style="background:var(--cat-purple)" onclick="selectColor(this,'var(--cat-purple)')"></div>
+<div class="color-dot" style="background:var(--cat-yellow)" onclick="selectColor(this,'var(--cat-yellow)')"></div>
+</div>
+</div>
+
+<div style="margin-top:12px;display:flex;gap:10px;justify-content:flex-end;">
+<button class="ghost-btn" onclick="resetForm()">Reset</button>
+<button class="save-btn" onclick="saveEntry()">Save Entry</button>
+</div>
+
+<div class="list" id="list"></div>
+</div>
+
+<div class="card">
+<h3 class="card-title">Today</h3>
+<div class="status-pill" id="todayCount">Taken today: 0</div>
+<div id="todayDateText" style="font-size:0.85rem;margin-top:6px;"></div>
+<div class="list" id="todayList"></div>
+</div>
+
+</div>
+</div>
+
+<script>
+// standalone medicine tracker (no calendar logic)
+// Everything saves locally in your browser.
+
+const STORAGE_KEY="medicine_entries_v3";
+let entries=JSON.parse(localStorage.getItem(STORAGE_KEY))||[];
+let editingId=null;
+let selectedColor="var(--cat-blue)";
+
+function saveStorage(){
+localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));
+}
+
+function todayISO(){
+return new Date().toISOString().split("T")[0];
+}
+
+function selectColor(el,color){
+document.querySelectorAll(".color-dot").forEach(d=>d.classList.remove("active"));
+el.classList.add("active");
+selectedColor=color;
+}
+
+function resetForm(){
+editingId=null;
+document.getElementById("dateField").value=todayISO();
+document.getElementById("timeField").value="";
+document.getElementById("nameField").value="";
+document.getElementById("doseField").value="";
+document.getElementById("notesField").value="";
+}
+
+function saveEntry(){
+const date=document.getElementById("dateField").value;
+const time=document.getElementById("timeField").value;
+const name=document.getElementById("nameField").value.trim();
+const dose=document.getElementById("doseField").value.trim();
+const notes=document.getElementById("notesField").value.trim();
+
+if(!date||!name||!dose){
+alert("Please fill required fields 🌸");
+return;
+}
+
+if(editingId){
+const i=entries.findIndex(e=>e.id===editingId);
+entries[i]={...entries[i],date,time,name,dose,notes,color:selectedColor};
+}else{
+entries.push({id:Date.now().toString(),date,time,name,dose,notes,color:selectedColor});
+}
+
+saveStorage();
+resetForm();
+renderAll();
+}
+
+function deleteEntry(id){
+entries=entries.filter(e=>e.id!==id);
+saveStorage();
+renderAll();
+}
+
+function editEntry(id){
+const e=entries.find(x=>x.id===id);
+editingId=id;
+document.getElementById("dateField").value=e.date;
+document.getElementById("timeField").value=e.time;
+document.getElementById("nameField").value=e.name;
+document.getElementById("doseField").value=e.dose;
+document.getElementById("notesField").value=e.notes;
+selectedColor=e.color;
+}
+
+function renderAll(){
+renderList();
+renderToday();
+}
+
+function renderList(){
+const list=document.getElementById("list");
+list.innerHTML="";
+entries.forEach(e=>{
+const row=document.createElement("div");
+row.className="entry";
+row.style.background=e.color;
+
+row.innerHTML=`
+<div>
+<div class="entry-title">${e.name}</div>
+<div class="entry-meta">
+Date: ${e.date}<br>
+Time: ${e.time||"-"}<br>
+Dose: ${e.dose}<br>
+Notes: ${e.notes||"-"}
+</div>
+</div>
+<div>
+<button class="tiny tiny-edit" onclick="editEntry('${e.id}')">Edit</button>
+<button class="tiny tiny-del" onclick="deleteEntry('${e.id}')">Delete</button>
+</div>
+`;
+list.appendChild(row);
+});
+}
+
+function renderToday(){
+const today=todayISO();
+const todayEntries=entries.filter(e=>e.date===today);
+document.getElementById("todayCount").innerText="Taken today: "+todayEntries.length;
+document.getElementById("todayDateText").innerText=new Date().toDateString();
+
+const list=document.getElementById("todayList");
+list.innerHTML="";
+todayEntries.forEach(e=>{
+const row=document.createElement("div");
+row.className="entry";
+row.style.background=e.color;
+row.innerHTML=`
+<div>
+<div class="entry-title">${e.name}</div>
+<div class="entry-meta">
+Time: ${e.time||"-"}<br>
+Dose: ${e.dose}
+</div>
+</div>
+`;
+list.appendChild(row);
+});
+}
+
+function clearAll(){
+if(!confirm("Delete all entries? 🌷")) return;
+entries=[];
+saveStorage();
+renderAll();
+}
+
+document.getElementById("dateField").value=todayISO();
+renderAll();
+</script>
+
+</body>
+</html>
