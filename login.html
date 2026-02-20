@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌸 Welcome 🌸</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --bg-color: #fdf6f6;
+            --text-color: #5a5a5a;
+            --cat-blue: #b2e2f2;
+            --cat-green: #b2f2bb;
+            --cat-purple: #e2b2f2;
+            --cat-yellow: #f2eeb2;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+        }
+
+        /* --- TOP NAV (Identical to Calendar) --- */
+        .topnav {
+            background-color: white;
+            display: flex;
+            align-items: center;
+            padding: 10px 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .topnav-left, .topnav-center, .topnav-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .topnav-left { justify-content: flex-start; }
+        .topnav-center { justify-content: center; }
+        .topnav-right { justify-content: flex-end; }
+
+        .topnav a {
+            color: var(--text-color);
+            text-align: center;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: 0.3s;
+        }
+
+        .topnav a:hover {
+            background-color: var(--bg-color);
+            color: var(--primary-pink);
+        }
+
+        .topnav a.active {
+            background-color: var(--primary-pink);
+            color: white;
+        }
+
+        /* --- LAYOUT WRAPPER --- */
+        .page-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 70px);
+            padding: 20px;
+        }
+
+        /* --- AUTH CARD (Styled like the Calendar) --- */
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+            background: white;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            border-radius: 30px;
+            overflow: hidden;
+            border: 8px solid white;
+            animation: popIn 0.5s ease;
+        }
+
+        .auth-header {
+            background: var(--primary-pink);
+            color: white;
+            padding: 30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .auth-header button {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            cursor: pointer;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .auth-header button.active {
+            background: white;
+            color: var(--primary-pink);
+        }
+
+        .auth-body {
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #d8a4a4;
+        }
+
+        .auth-card input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #f9f0f2;
+            border-radius: 12px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: 0.3s;
+            background-color: #fffafb;
+        }
+
+        .auth-card input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            background-color: white;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 183, 197, 0.5);
+            opacity: 0.9;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #a0a0a0;
+        }
+
+        .footer-text a {
+            color: var(--primary-pink);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Toggle visibility */
+        .hidden {
+            display: none;
+        }
+
+        @keyframes popIn { 
+            from { transform: scale(0.95); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. TOP NAV BAR -->
+    <div class="topnav">
+        <div class="topnav-left">
+            <a href="#">Home</a>
+            <a href="#">Support Group</a>
+            <a href="#">Medicine</a>
+        </div>
+        
+        <div class="topnav-center">
+            <a href="#"  class="active">Login or Sign Up</a>
+        </div>
+        
+        <div class="topnav-right">
+            <a href="#">Account</a>
+        </div>
+    </div>
+
+    <!-- 2. WRAPPER FOR AUTH -->
+    <div class="page-content">
+        <div class="auth-card">
+            <div class="auth-header">
+                <button id="loginTab" class="active" onclick="switchTab('login')">Login</button>
+                <button id="signupTab" onclick="switchTab('signup')">Sign Up</button>
+            </div>
+
+            <div class="auth-body">
+                <!-- LOGIN FORM -->
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="hello@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Welcome Back!</button>
+                </form>
+
+                <!-- SIGN UP FORM -->
+                <form id="signupForm" class="hidden">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="hello@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Create a password" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(type) {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const loginTab = document.getElementById('loginTab');
+            const signupTab = document.getElementById('signupTab');
+
+            if (type === 'login') {
+                loginForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+            } else {
+                loginForm.classList.add('hidden');
+                signupForm.classList.remove('hidden');
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+            }
+        }
+
+        // Form Submission placeholder logic
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('Form submitted! In a real app, this would redirect you.');
+            });
+        });
+    </script>
+</body>
+</html>
