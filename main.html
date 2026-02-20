@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌸 Care Companion - Breast Cancer Support</title>
+    <title>🌸 Breast Cancer Tracker</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -49,22 +49,38 @@
 
         .topnav a.active { background-color: var(--primary-pink); color: white; }
 
+        /* New Sign Up Button in Nav */
         .nav-signup {
             background-color: var(--primary-pink);
             color: white !important;
             margin-left: 10px;
             box-shadow: 0 4px 10px rgba(255, 183, 197, 0.4);
         }
+        .nav-signup:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
 
-        /* --- HERO CONTENT --- */
+        /* --- HOME CONTENT --- */
         .hero {
             text-align: center;
-            padding: 80px 20px 40px 20px;
+            padding: 100px 20px;
         }
 
         .hero h1 { color: var(--primary-pink); font-size: 3rem; margin: 0; }
-        .hero p { margin-bottom: 30px; font-size: 1.2rem; }
+        .hero p { margin-bottom: 30px; }
 
+        /* ADDED: Info Section Styling */
+        .info-section {
+            max-width: 800px;
+            margin: 0 auto 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        /* New Hero Sign Up Button */
         .hero-btn {
             display: inline-block;
             background-color: var(--primary-pink);
@@ -80,41 +96,21 @@
 
         .hero-btn:hover {
             transform: translateY(-3px);
+            box-shadow: 0 15px 25px rgba(255, 183, 197, 0.4);
             background-color: white;
             color: var(--primary-pink);
             outline: 2px solid var(--primary-pink);
         }
 
-        /* --- FEATURES SECTION --- */
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            padding: 40px;
-            flex-wrap: wrap;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 25px;
-            width: 300px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            text-align: center;
-        }
-
-        .feature-card h3 { color: var(--primary-pink); margin-top: 0; }
-        .feature-card p { font-size: 0.95rem; line-height: 1.6; }
-
-        /* --- CHAT WIDGET --- */
+        /* --- FLOATING CHAT WIDGET --- */
         #chat-widget {
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px; /* EDITED: Changed from right to left */
             z-index: 2000;
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
+            align-items: flex-start; /* EDITED: Changed from flex-end */
         }
 
         .chat-launcher {
@@ -129,8 +125,11 @@
             font-size: 24px;
             cursor: pointer;
             box-shadow: 0 10px 25px rgba(255, 183, 197, 0.6);
+            transition: transform 0.3s;
             border: none;
         }
+
+        .chat-launcher:hover { transform: scale(1.1); }
 
         .chat-window {
             width: 350px;
@@ -156,10 +155,15 @@
             font-weight: 600;
         }
 
+        .close-chat { cursor: pointer; font-size: 20px; background: none; border: none; color: white; }
+
         .chat-content {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
             background-color: #fff9fa;
         }
 
@@ -169,6 +173,7 @@
             padding: 12px;
             border-radius: 15px;
             border-left: 4px solid var(--primary-pink);
+            margin: 0;
         }
 
         .chat-footer { padding: 15px; background: white; border-top: 1px solid #eee; }
@@ -178,6 +183,7 @@
             padding: 10px;
             border: 2px solid var(--bg-color);
             border-radius: 12px;
+            font-family: inherit;
             box-sizing: border-box;
             outline: none;
         }
@@ -194,7 +200,10 @@
             cursor: pointer;
         }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -214,16 +223,73 @@
     </div>
 
     <header class="hero">
-        <h1>You are not alone. 🌸</h1>
-        <p>A supportive space for your breast cancer journey.</p>
-        <a href="calendar.html" class="hero-btn">Start Tracking</a>
+        <h1>Welcome Home 🌸</h1>
+        <p>Heal in comfort, powered by Gemini.</p>
+        <a href="login.html" class="hero-btn">Get Started</a>
     </header>
 
-    <section class="features">
-        <div class="feature-card">
-            <h3>Track Your Care</h3>
-            <p>Use our specialized calendar to log chemo sessions, doctor appointments, and recovery days. Keeping everything in one place helps reduce the mental load.</p>
+    <div class="info-section">
+        <h2>Breast Cancer Wellness Journey</h2>
+        <p>This space is designed to support you through your recovery. Use the <strong>Calendar</strong> to track symptoms, appointments, and daily wellness.</p>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+        <h3>How to use Google Calendar Sync:</h3>
+        <p>1. Go to your <strong>Calendar</strong> page.<br>
+           2. Log your treatment or check-up.<br>
+           3. Click "Sync to Google" to automatically add it to your personal Google account.</p>
+    </div>
+
+    <div id="chat-widget">
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <span>✨ Gemini AI</span>
+                <button class="close-chat" onclick="toggleChat()">&times;</button>
+            </div>
+            <div class="chat-content">
+                <p id="response">Hello! How can I help you today?</p>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="userInput" placeholder="Ask Gemini...">
+                <button class="gemini-btn" onclick="askAI()">Send</button>
+            </div>
         </div>
-        <div class="feature-card">
-            <h3>Google Calendar Sync</h3>
-            <p>Never miss a session. Add any treatment event directly to
+        
+        <button class="chat-launcher" onclick="toggleChat()">✨</button>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const chat = document.getElementById('chatWindow');
+            chat.style.display = (chat.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        async function askAI() {
+            const promptInput = document.getElementById('userInput');
+            const prompt = promptInput.value;
+            const responseLabel = document.getElementById('response');
+            
+            if (!prompt) return;
+
+            responseLabel.innerText = "Thinking...";
+            promptInput.value = ""; 
+
+            try {
+                const response = await fetch('http://localhost:3000/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                const data = await response.json();
+                responseLabel.innerText = data.text || data.error || "Error: Unexpected format.";
+
+            } catch (err) {
+                responseLabel.innerText = "Network Error: Is the server running?";
+            }
+        }
+
+        document.getElementById("userInput").addEventListener("keypress", (e) => {
+            if (e.key === "Enter") askAI();
+        });
+    </script>
+</body>
+</html>
