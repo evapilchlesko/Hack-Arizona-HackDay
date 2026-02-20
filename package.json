@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@google/genai": "^1.42.0",
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1"
+  },
+  "name": "hack-arizona-hackday",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evapilchlesko/Hack-Arizona-HackDay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evapilchlesko/Hack-Arizona-HackDay/issues"
+  },
+  "homepage": "https://github.com/evapilchlesko/Hack-Arizona-HackDay#readme"
+}

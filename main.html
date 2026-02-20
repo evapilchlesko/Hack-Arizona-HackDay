@@ -1,4 +1,47 @@
 <!DOCTYPE html>
-<head>
-    <body>TESTING TESTING</body>
-</head>
+<html>
+<body>
+    <h2>Gemini Web Chat</h2>
+    <input type="text" id="userInput" placeholder="Ask Gemini...">
+    <button onclick="askAI()">Send</button>
+    <p id="response">Response will appear here...</p>
+
+    <script>
+        async function askAI() {
+            const promptInput = document.getElementById('userInput');
+            const prompt = promptInput.value;
+            const responseLabel = document.getElementById('response');
+            
+            if (!prompt) return; // Don't send empty prompts
+
+            responseLabel.innerText = "Thinking...";
+            promptInput.value = ""; // Clear input for better UX
+
+            try {
+                const response = await fetch('http://localhost:3000/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: prompt })
+                });
+
+                const data = await response.json();
+
+                // Check if the backend sent an error or the expected text
+                if (data.text) {
+                    responseLabel.innerText = data.text;
+                } else if (data.error) {
+                    responseLabel.innerText = "Error from AI: " + data.error;
+                } else {
+                    responseLabel.innerText = "Error: Received unexpected data format.";
+                    console.log("Full data received:", data);
+                }
+
+            } catch (err) {
+                responseLabel.innerText = "Network Error: Is the server running?";
+                console.error("Fetch error:", err);
+            }
+        }
+    </script>
+</body>
+</html>
+
